@@ -1,0 +1,3 @@
+name=Œê”ö‘§‚ÌŽq‰¹‘¬“x‚ð100‚É‚·‚é(&2)
+execute=set_R_velocity100.py
+shell=use
