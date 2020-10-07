@@ -1,0 +1,3 @@
+name=「っ」を前のノートに結合する
+execute=join_cl.py
+shell=use
