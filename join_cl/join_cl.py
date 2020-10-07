@@ -35,7 +35,7 @@ def main():
     処理対象ファイルを指定し、ファイル入出力を行う。
     """
     up.utauplugin.run(join_cl)
-    input('waiting input')
+
 
 if __name__ == '__main__':
     main()
