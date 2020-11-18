@@ -12,9 +12,7 @@ def main(plugin):
     "V CV" のCV部分はひらがなとカタカナとRのみ許可する
     """
     # 許可する文字のリスト
-    allowed_list = [chr(i) for i in range(12353, 12436)]
-    + [chr(i) for i in range(12449, 12532 + 1)]
-    + ['R']
+    allowed_list = [chr(i) for i in range(12353, 12436)] + [chr(i) for i in range(12449, 12532 + 1)] + ['R']
 
     notes = plugin.notes
     for note in notes:
