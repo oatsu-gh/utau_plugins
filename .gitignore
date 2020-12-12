@@ -1,1 +1,4 @@
-sample/*
+release
+sample
+*.exe
+*.zip

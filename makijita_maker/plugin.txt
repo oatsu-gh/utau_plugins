@@ -1,0 +1,2 @@
+name=Šª‚«ã‚Á‚Û‚­‚·‚é
+execute=makijita_maker.exe
