@@ -1,4 +1,4 @@
-# utau-plugins
+# utau_plugins
  [utaupy](https://github.com/oatsu-gh/utaupy) を使って作ったUTAUプラグイン集
 
 ## join_cl
