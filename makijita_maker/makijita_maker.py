@@ -46,7 +46,7 @@ def main(plugin: utauplugin.UtauPlugin, num: int):
 
 
 if __name__ == '__main__':
-    print('_____ξ・ヮ・) < makijita_maker v0.0.1 ________')
+    print('_____ξ・ヮ・) < makijita_maker v0.0.2 ________')
     print('Copyright (c) 2020 oatsu')
     print('Copyright (c) 2020 oatsu')
     print('Copyright (c) 2001-2020 Python Software Foundation\n')
