@@ -1,6 +1,6 @@
 # Infrequent Plugin Launcher
 
-使用頻度の低いUTAUプラグインを呼び出すUTAUプラグイン
+使用頻度の低いUTAUプラグインを呼び出すUTAUプラグイン (**開発中止**)
 
 ## 開発動機および要件
 
