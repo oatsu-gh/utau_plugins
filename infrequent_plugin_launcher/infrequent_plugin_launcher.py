@@ -18,7 +18,8 @@ https://twitter.com/yauta7577/status/1338854212487114752
 
 import subprocess
 from glob import glob
-from os.path import abspath, basename, dirname
+from os import chdir
+from os.path import abspath, dirname
 from pprint import pprint
 from sys import argv
 
@@ -43,9 +44,8 @@ def load_all_plugins(path_dir: str):
         # 改行文字を取り除く
         lines = [line.strip() for line in lines]
         # プラグインの情報を取得して辞書にする
-        d = {'path': abspath(path_plugintxt),
-             'dirname': dirname(path_plugintxt),
-             'basename': basename(path_plugintxt),
+        d = {'dirname': dirname(abspath(path_plugintxt)),
+             'execute': None,
              'name': None,
              'shell': None}
         for line in lines:
@@ -69,6 +69,7 @@ def filter_plugins(all_plugins: list):
         # 無効化されたプラグインだった場合のみリストに追加
         if name.startswith('//') or name.startswith('#'):
             d_plugin['name'] = name.lstrip('/#')
+            d_plugin['execute'] = name.lstrip('/#')
             infrequent_plugins.append(d_plugin)
     return infrequent_plugins
 
@@ -79,8 +80,10 @@ def run_external_plugin(d_plugin: dict, path_temporary_ust: str):
     d_plugin: plugin.txt をもとにした辞書
     path_temporary_ust: UTAUがプラグインに渡す一時ファイルのパス
     """
+    # カレントディレクトリを対象のプラグインのフォルダに変更
+    chdir(d_plugin['dirname'])
     # 実行したいコマンド
-    args = [d_plugin['abspath'], path_temporary_ust]
+    args = [d_plugin['execute'], path_temporary_ust]
     # シェルを使うかどうか (True/False)
     use_shell: bool = (d_plugin['shell'] == 'use')
     # 対象のプラグインを起動
@@ -99,6 +102,7 @@ def select_plugin(plugins: list):
     selected_i = int(input())
     # プラグイン情報の辞書を返す
     return plugins[selected_i]
+
 
 def main():
     """
