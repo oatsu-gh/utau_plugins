@@ -1,0 +1,3 @@
+name=あまり使わないプラグインを呼び出すプラグイン
+execute=infrequent_plugin_launcher.py
+shell=use
