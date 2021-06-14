@@ -1,0 +1,4 @@
+name=歌詞を括弧でくくってファイル出力する
+execute=.\lyric_bracketed.bat
+ustversion=1.20
+notes=all
