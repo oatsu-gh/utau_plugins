@@ -95,7 +95,8 @@ def install_plugin(input_dir, python_dir, dst_dir):
     # プラグインがインストールされたらできるフォルダ
     output_dir = join(dst_dir, basename(input_dir))
     # すでにインストールされている場合は削除する
-    send2trash(output_dir)
+    if exists(output_dir):
+        send2trash(output_dir)
     # ソースコードをインストールする
     copytree(input_dir, output_dir)
     # Pythonをインストールする
@@ -109,15 +110,18 @@ def install_requirements_with_pip(plugin_installed_dir):
     Python.exeとソースコードのインストールが終わったフォルダを指定して、
     そのプラグインに必要なライブラリをインストールする。
     """
-    if exists(join(plugin_installed_dir, 'requirements.txt')):
-        # プラグインのフォルダ名やユーザー名に空白があると困るので、作業フォルダを移動する。
-        chdir(plugin_installed_dir)
-        # pip.exeを探す
-        path_pythonw_exe = glob(join('python-*-embed-*', 'pythonw.exe'))[0]
+    # プラグインのフォルダ名やユーザー名に空白があると困るので、作業フォルダを移動する。
+    chdir(plugin_installed_dir)
+    # pythonw.exeを探す
+    path_pythonw_exe = glob(join('python-*-embed-*', 'pythonw.exe'))[0]
+    # ライブラリをインストール
+    if exists('requirements.txt'):
         subprocess.run([path_pythonw_exe, '-m', 'pip', 'install', '-r', 'requirements.txt'],
                        check=True)
-        # 作業フォルダをもとに戻す
-        chdir(dirname(__file__))
+    else:
+        subprocess.run([path_pythonw_exe, '-m', 'pip', 'install', 'utaupy'], check=True)
+    # 作業フォルダをもとに戻す
+    chdir(dirname(__file__))
 
 
 def main():
