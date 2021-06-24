@@ -1,7 +1,7 @@
 #!python3
 # coding: utf-8
 # Copyright (c) oatsu
-"""
+r"""
 'x R' の語尾ブレスを使うために、
 音符のあとの休符を分割して、同じ音程にする。
     1. 現在のノートが休符であるか判定する
@@ -17,8 +17,6 @@
     5. 音符→休符の流れをまた探す
 """
 
-import sys
-from pprint import pprint
 
 import utaupy as up
 
@@ -45,20 +43,22 @@ def split_restnotes(plugin):
         print(note)
     print('---')
 
+
 def main():
     path = input('path: ').strip(r'"')
     plugin = up.utauplugin.load(path)
     print(plugin.prev)
     print(plugin.next)
-    for note in plugin.values:
+    for note in plugin.notes:
         print(note)
     print('-----------------------')
     split_restnotes(plugin)
-    for note in plugin.values:
+    for note in plugin.notes:
         print(note)
     plugin.write(path + '_out.txt')
 
     input('Press Enter to exit')
 
+
 if __name__ == '__main__':
-    main()
+    up.utauplugin.run(split_restnotes)
