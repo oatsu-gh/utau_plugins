@@ -1,0 +1,3 @@
+name=‘I‘ð”ÍˆÍ‚ð‚·‚Á‚Ò‚ñ‹x•„‚É‚·‚é(&0)
+execute=set_lyric_R.py
+shell=use
