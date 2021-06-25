@@ -24,12 +24,12 @@ def utau_appdata_root() -> str:
     return expandvars(r'%APPDATA%\UTAU')
 
 
-def get_python_dir(base_path='./'):
+def get_python_dir(start='./'):
     """
     組み込み用Pythonのフォルダを特定する。
     """
     # python.exeのパスをすべて取得する
-    python_exe_files = glob(join(base_path, 'python-*-embed-*', 'python.exe'))
+    python_exe_files = glob(join(start, 'python-*-embed-*', 'python.exe'))
     # 一つも見つからなかった場合
     if len(python_exe_files) == 0:
         raise Exception('組み込み用Pythonが見つかりません。')
@@ -64,12 +64,12 @@ def read_plugin_txt_as_dict(input_dir) -> dict:
     return d
 
 
-def select_plugin(base_path='./'):
+def select_plugin(start='./'):
     """
     インストールしたいプラグインをユーザーに指定させる。
     """
     # インストール可能なプラグイン一覧を取得する。
-    available_plugins = [dirname(path) for path in glob(join(base_path, '*', 'plugin.txt'))]
+    available_plugins = [dirname(path) for path in glob(join(start, '*', 'plugin.txt'))]
     available_plugins_names = [read_plugin_txt_as_dict(path)['name'] for path in available_plugins]
     # ユーザーに指定させるために表示する文字列を作成する。
     message = '\n'.join(f'  {i}: {name}' for i, name in enumerate(available_plugins_names))
@@ -105,6 +105,27 @@ def install_plugin(input_dir, python_dir, dst_dir):
     return output_dir
 
 
+def make_wrapper_bat(plugin_installed_dir):
+    r"""
+    UTAUプラグインとしてちゃんと動くように、wrapper としてのバッチファイルを作成する。
+    プラグインのフォルダ名とPythonスクリプト名が一致する必要がある。
+    @python-3.9.5-embed-amd64\python.exe plugin_name.py %*
+    """
+    # pythonw.exeを探す
+    path_python_exe = basename(glob(join('python-*-embed-*', 'python.exe'))[0])
+    # plugin_name.py のファイル名がフォルダ名と一致する前提で処理する。
+    plugin_name = basename(plugin_installed_dir)
+    # プラグインのフォルダ名とPythonスクリプト名が一致することを確認する。
+    assert exists(join(plugin_installed_dir, f'{plugin_name}.py'))
+    # バッチファイルのパス
+    path_bat = join(plugin_installed_dir, f'{plugin_name}.bat')
+    # バッチファイルに書き込む文字列
+    s = f'@"{path_python_exe}" "{plugin_name}.py" %*'
+    # バッチファイルに書き込む
+    with open(path_bat, 'w', encoding='cp932') as f:
+        f.write(s)
+
+
 def install_requirements_with_pip(plugin_installed_dir):
     """
     Python.exeとソースコードのインストールが終わったフォルダを指定して、
@@ -113,13 +134,14 @@ def install_requirements_with_pip(plugin_installed_dir):
     # プラグインのフォルダ名やユーザー名に空白があると困るので、作業フォルダを移動する。
     chdir(plugin_installed_dir)
     # pythonw.exeを探す
-    path_pythonw_exe = glob(join('python-*-embed-*', 'pythonw.exe'))[0]
+    path_python_exe = glob(join('python-*-embed-*', 'python.exe'))[0]
     # ライブラリをインストール
     if exists('requirements.txt'):
-        subprocess.run([path_pythonw_exe, '-m', 'pip', 'install', '-r', 'requirements.txt'],
+        subprocess.run([path_python_exe, '-m', 'pip', 'install', '-r', 'requirements.txt'],
                        check=True)
     else:
-        subprocess.run([path_pythonw_exe, '-m', 'pip', 'install', 'utaupy'], check=True)
+        subprocess.run([path_python_exe, '-m', 'pip', 'install', 'utaupy'],
+                       check=True)
     # 作業フォルダをもとに戻す
     chdir(dirname(__file__))
 
@@ -134,8 +156,11 @@ def main():
     input_dir = select_plugin()
     # インストールする。
     utau_appdata_roaming_plugins = join(utau_appdata_root(), 'plugins')
-    install_plugin(input_dir, python_dir, utau_appdata_roaming_plugins)
-    # 書くプラグインに必要なライブラリをインストールする。
+    installed_dir = install_plugin(input_dir, python_dir, utau_appdata_roaming_plugins)
+    # バッチファイルを作成する。
+    make_wrapper_bat(installed_dir)
+    # インストールしたプラグインに必要なライブラリをインストールする。
+    install_requirements_with_pip(installed_dir)
     print('インストール完了しました！')
 
 
