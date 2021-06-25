@@ -1,3 +1,0 @@
-type=editplugin
-folder=lyric_bracketed
-contentsdir=lyric_bracketed
