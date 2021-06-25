@@ -1,3 +1,0 @@
-name=‰ÌŒ‚·‚Á‚Ò‚ñi˜A‘±‰¹j(&3)
-execute=lyric_suppin_ren.py
-shell=use
