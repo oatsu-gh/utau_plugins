@@ -1,2 +1,3 @@
 name=Šª‚«ã‚Á‚Û‚­‚·‚é
-execute=makijita_maker.exe
+execute=.\makijita_maker.bat
+ustversion=1.20
