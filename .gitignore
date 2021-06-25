@@ -3,3 +3,4 @@ sample
 test
 *.exe
 *.zip
+python-*-embed-*
