@@ -1,6 +1,12 @@
 # utau_plugins
 [utaupy](https://github.com/oatsu-gh/utaupy) を使って作ったUTAUプラグイン集
 
+## 使い方
+
+1. **install.bat** をダブルクリックする。
+2. インストールしたいプラグインを番号で選択する。
+3. エンターキーを押す。
+
 ## 同梱プラグイン
 
 ### copy_all_to_flags
