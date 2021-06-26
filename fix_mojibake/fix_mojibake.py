@@ -21,10 +21,11 @@ usage:
     python open_voicebank_readme.py hogehoge.tmp
 """
 
-import subprocess
 from glob import glob
+from os import startfile
 from os.path import exists, join
 from tempfile import TemporaryFile
+from typing import Union
 
 import utaupy
 
@@ -65,7 +66,7 @@ def repair_mojibake_lyrics(plugin):
     plugin_lyrics = [note.lyric for note in plugin.notes]
 
     # 歌詞が文字化けしていなかったら何もしない。
-    if not any(map(is_mojibake_string, plugin_lyrics)):
+    if not is_mojibake_string(''.join(plugin_lyrics)):
         return
     # 1か所でも歌詞が文字化けしていたら全部の歌詞を修復する。
     path_ust = plugin.setting.get('Project')
@@ -81,18 +82,22 @@ def repair_mojibake_lyrics(plugin):
         except UnicodeDecodeError:
             ust_is_mojibaked = True
 
-        # USTファイルが文字化け歌詞で上書きされており手遅れだった場合
-        if ust_is_mojibaked:
+        # USTファイルがUTF-8のまま無事な時
+        if not ust_is_mojibaked:
+            print('USTファイルを参照して歌詞を修復します。')
+            new_lyrics = ust_lyrics
+            # USTファイルのテンポと文字コードを修正して上書き保存
+            ust.setting['Mode2'] = True
+            fix_tempo(ust)
+            ust.write(path_ust, encoding='cp932')
+            print('USTファイルの文字コードを修正しました。USTファイルを開きます。')
+            startfile(path_ust)
+
+        # USTファイルが文字化け歌詞で上書きされており手遅れな時
+        else:
             print('歌詞を可能な限り修復します。')
             new_lyrics = [lyric.encode('cp932').decode('utf-8', errors='ignore')
                           for lyric in plugin_lyrics]
-        # USTファイルがUTF-8のまま無事な時
-        else:
-            print('USTファイルを参照して歌詞を修復します。')
-            new_lyrics = ust_lyrics
-            ust.write(path_ust, encoding='cp932')
-            ust.setting['Mode2'] = True
-            print('USTファイルの文字コードも修正しました。保存せずに閉じて開いたら歌詞以外も文字化けが直ります。')
 
         # ノート数が合うことを確認
         print(f'  歌詞修復前: [{"][".join(plugin_lyrics)}]')
@@ -104,14 +109,18 @@ def repair_mojibake_lyrics(plugin):
         note.lyric = new_lyrics[i]
 
 
+def fix_tempo(ust: Union[utaupy.ust.Ust, utaupy.utauplugin.UtauPlugin]):
+    """
+    MIDIを取り込んだ時に生じるテンポを修正する。
+    """
+    if str(ust.tempo) in ['500000', '500000.00']:
+        ust.notes[0].tempo = 120
+
+
 def main(plugin):
     """
     ファイルの存在を確認して各種文字コードやUSTの不具合を修正する。
     """
-    # テンポを直す
-    if str(plugin.tempo) in ['500000', '500000.00']:
-        print('テンポがおかしいので120にします。')
-        plugin.notes[0].tempo = 120
 
     # readme.txt の文字化けを修正する
     path_readme_txt = join(plugin.voicedir, 'readme.txt')
@@ -126,7 +135,8 @@ def main(plugin):
     otoini_files = glob(join(plugin.voicedir, '*/**/oto.ini'), recursive=True)
     for path_otoini in otoini_files:
         utf8_to_cp932(path_otoini)
-
+    # テンポを直す
+    fix_tempo(plugin)
     # 歌詞の文字化けを修正する
     repair_mojibake_lyrics(plugin)
 
