@@ -1,6 +1,8 @@
+_release
 release
 sample
 test
 *.exe
 *.zip
 python-*-embed-*
+__pychache__
