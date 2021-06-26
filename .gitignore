@@ -3,6 +3,7 @@ release
 sample
 test
 *.exe
+*.wav
 *.zip
 python-*-embed-*
 __pychache__
