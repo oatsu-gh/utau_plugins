@@ -1,4 +1,4 @@
-name=‰¹Œ¹‚Ìreadme‚ðŠJ‚­‚Â‚¢‚Å‚É•¶Žš‰»‚¯‚ð’¼‚·
+name=•¶Žš‰»‚¯‚ð’¼‚·
 execute=.\fix_mojibake.bat
 ustversion=1.20
 notes=all
