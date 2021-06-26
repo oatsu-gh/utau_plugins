@@ -106,9 +106,9 @@ def main(plugin):
     chrome_version = get_chrome_version()
     print('chrome_version:', chrome_version)
 
-    # DEBUG: 組み込み用PythonではchromedriverがインストールできないからローカルのPythonを使う。
-    # pythonw_exe= find_pythonw_exe()
-    pythonw_exe = 'python'
+    # DEBUG: 組み込み用PythonではchromedriverがインストールできないならローカルのPythonを使う。
+    pythonw_exe= find_pythonw_exe()
+    # pythonw_exe = 'python'
     upgrade_chromedriver(chrome_version, pythonw_exe)
 
     # Seleniumつかって診断
