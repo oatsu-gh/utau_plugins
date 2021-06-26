@@ -39,7 +39,7 @@ def main():
     path_ust = input('path_ust: ')
     ust = up.ust.load(path_ust)
     ust = join_cl(ust)
-    path_ust_out = splitext(path_ust)[0] + '_joincl.ust'
+    path_ust_out = splitext(path_ust)[0] + '_join_cl.ust'
     ust.write(path_ust_out)
 
 if __name__ == '__main__':
