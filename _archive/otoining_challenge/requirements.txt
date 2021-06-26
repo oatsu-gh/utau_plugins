@@ -1,0 +1,4 @@
+# chromedriver-binary
+pyperclip
+selenium
+utaupy>=1.12.0
