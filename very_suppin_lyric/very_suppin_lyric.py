@@ -29,7 +29,9 @@ def replace_special_lyric(plugin):
     """
     d_replace = {
         ' n': 'ん', ' s': ' す', ' t': ' っ', ' k': ' っ',
-        ' h': ' R', ' -': ' R', '息': 'R', 'ぶれす': 'R', 'br': 'R'
+        ' h': ' R', ' -': ' R',
+        '息': 'R', 'ぶれす': 'R', 'br': 'R',
+        'づ': 'ず', 'を': 'お'
     }
     for note in plugin.notes:
         lyric = note.lyric
