@@ -12,7 +12,8 @@ from shutil import copy2, copytree, rmtree
 
 RELEASE_DIR = '_release'
 RELEASE_NAME = 'utau_plugins_v---'
-IGNORE_LIST = [RELEASE_DIR, basename(__file__), '_archive', '.git', '.gitignore', '.gitattribute']
+IGNORE_LIST = [RELEASE_DIR, basename(__file__),
+               '_archive', '_test', '.git', '.gitignore', '.gitattribute']
 REMOVE_LIST = ['__pycache__', '.mypy']
 
 
@@ -76,3 +77,4 @@ def main():
 if __name__ == '__main__':
     chdir(dirname(__file__))
     main()
+    input('Press Enter to exit.')
