@@ -130,14 +130,6 @@ def main(plugin):
     # 歌詞の文字化けを修正する
     repair_mojibake_lyrics(plugin)
 
-    # readme.txt を開く
-    if all((' ' not in path_readme_txt, '　' not in path_readme_txt, exists(path_readme_txt))):
-        subprocess.run(['@start', path_readme_txt], check=True, shell=True)
-    elif any((' ' not in path_readme_txt, '　' not in path_readme_txt)):
-        print('パスに空白が含まれているので readme.txt を開けません。:', path_readme_txt)
-    elif not exists(path_readme_txt):
-        print('readme.txtが見当たりません。:', path_readme_txt)
-
 
 if __name__ == '__main__':
     utaupy.utauplugin.run(main)
