@@ -1,0 +1,3 @@
+name=’´‰ÌŒ‚·‚Á‚Ò‚ñƒvƒ‰ƒOƒCƒ“
+execute=.\very_suppin_lyric.bat
+ustversion=1.20

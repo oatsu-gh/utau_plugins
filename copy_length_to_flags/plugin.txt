@@ -1,0 +1,3 @@
+name=フラグにノート長をコピーする／削除する(&[)
+execute=.\copy_length_to_flags.bat
+ustversion=1.20

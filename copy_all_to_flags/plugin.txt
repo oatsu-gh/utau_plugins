@@ -1,0 +1,3 @@
+name=全情報をフラグにコピーする
+execute=.\copy_all_to_flags.bat
+ustversion=1.20

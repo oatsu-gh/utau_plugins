@@ -1,0 +1,3 @@
+name=‰ÌŒ‚ğ‘å–¾_®‰Ì˜A‘±‰¹‚É‚·‚é
+execute=daimyojinizer.exe
+ustversion=1.20
