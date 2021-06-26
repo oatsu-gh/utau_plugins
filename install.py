@@ -112,7 +112,7 @@ def make_wrapper_bat(plugin_installed_dir):
     @python-3.9.5-embed-amd64\python.exe plugin_name.py %*
     """
     # pythonw.exeを探す
-    path_python_exe = basename(glob(join('python-*-embed-*', 'python.exe'))[0])
+    path_python_exe = glob(join('python-*-embed-*', 'python.exe'))[0]
     # plugin_name.py のファイル名がフォルダ名と一致する前提で処理する。
     plugin_name = basename(plugin_installed_dir)
     # プラグインのフォルダ名とPythonスクリプト名が一致することを確認する。
@@ -120,7 +120,7 @@ def make_wrapper_bat(plugin_installed_dir):
     # バッチファイルのパス
     path_bat = join(plugin_installed_dir, f'{plugin_name}.bat')
     # バッチファイルに書き込む文字列
-    s = f'@"{path_python_exe}" "{plugin_name}.py" %*'
+    s = f'{path_python_exe} "{plugin_name}.py" %*'
     # バッチファイルに書き込む
     with open(path_bat, 'w', encoding='cp932') as f:
         f.write(s)
