@@ -1,8 +1,6 @@
-# open_voicebank_readme
+# fix_mojibake
 
 使用中の音源の readme.txt を開くついでに文字化けを直す UTAU プラグイン
-
-**open_voicebank_readme has been moved to [utau_plugins](https://github.com/oatsu-gh/utau_plugins) as [fix_mojibake](https://github.com/oatsu-gh/utau_plugins/fix_mojibake).**
 
 ## インストール
 
@@ -19,7 +17,7 @@ open_voicebank_readme.zip をダウンロードして、D&D でインストー�
 
 - Windows 10
 - Python 3.9.5
-- utaupy 1.12.1以上
+- utaupy 1.13.0
 - UTAU 0.4.18e
 
 ## 更新履歴
