@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Copyright (c) 2021 oatsu
 """
-UTAU音源のreadme.txtを開くプラグイン
+文字化けを直すプラグイン
 
 ## 機能
 
@@ -100,8 +100,11 @@ def repair_mojibake_lyrics(plugin):
                           for lyric in plugin_lyrics]
 
         # ノート数が合うことを確認
-        print(f'  歌詞修復前: [{"][".join(plugin_lyrics)}]')
-        print(f'  歌詞修復後: [{"][".join(new_lyrics)}]')
+        print('修復前の歌詞------------')
+        print(f'[{"][".join(plugin_lyrics)}]')
+        print('修復後の歌詞------------')
+        print(f'[{"][".join(new_lyrics)}]')
+        print('------------------------')
         assert len(new_lyrics) == len(plugin_lyrics), '修復前後のノート数が一致しません。'
 
     # 歌詞を置換
