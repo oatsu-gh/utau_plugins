@@ -9,33 +9,37 @@
 
 ## 同梱プラグイン
 
-### copy_all_to_flags
+### copy_all_to_flags（フラグに全情報をコピーする）
 
 あらゆるノート情報をフラグ欄にコピーする。（ネタ）
 
-### copy_length_to_flags
+### copy_length_to_flags（フラグにノート長をコピーする／削除する）
 
 ノート長情報をフラグ欄にコピーする。
 
-### daimyojinizer
-
-歌詞を大明神式にする。
-
-### join_cl
+### join_cl（「っ」を前のノートに結合する）
 
 促音を直前のノートに結合する。
 
-### lyric_bracketed
+### lyric_bracketed（歌詞を括弧でくくってファイル出力する）
 
 歌詞を括弧でくくってテキストファイルとして保存する。
 
-### makijita_maker
+### makijita_maker（巻き舌っぽくする）
 
 選択範囲の最初のノートを分割して巻き舌っぽくする。
 
-### set_R_vel100
+### set_lyric_R（すっぴん休符にする）
+
+選択範囲のノートをすっぴん休符にする。
+
+### set_R_vel100（語尾息の子音速度を100にする）
 
 語尾音素の子音速度を100にする。
+
+### very_suppin_lyric（超歌詞すっぴんプラグイン）
+
+
 
 ## 更新履歴
 
