@@ -15,6 +15,21 @@ from shutil import copytree
 from send2trash import send2trash
 
 
+def upgrade_python_embed_packages():
+    r"""
+    python-3.9.5-embed-amd64/python.exe -m pip install --upgrade pip
+
+    同梱配布するパッケージを更新する。
+    """
+    print('Upgrading packages')
+    python_exe = find_python_exe()
+    subprocess.run([python_exe, '-m', 'pip', 'install', '--upgrade', 'pip'], check=True)
+    subprocess.run([python_exe, '-m', 'pip', 'install', '--upgrade', 'setuptools'], check=True)
+    subprocess.run([python_exe, '-m', 'pip', 'install', '--upgrade', 'wheel'], check=True)
+    subprocess.run([python_exe, '-m', 'pip', 'install', '--upgrade', 'send2trash'], check=True)
+
+
+
 def utau_appdata_root() -> str:
     r"""
     プラグインとか音源が置いてあるフォルダのパスを返す。
@@ -71,16 +86,20 @@ def select_plugin(start='./'):
     インストールしたいプラグインをユーザーに指定させる。
     """
     # インストール可能なプラグイン一覧を取得する。
-    available_plugins = [dirname(path) for path in glob(join(start, '*', 'plugin.txt'))]
-    available_plugins_names = [read_plugin_txt_as_dict(path)['name'] for path in available_plugins]
+    available_plugins = \
+        [dirname(path) for path in glob(join(start, '*', 'plugin.txt'))]
+    available_plugins_names = \
+        [read_plugin_txt_as_dict(path)['name'] for path in available_plugins]
     # ユーザーに指定させるために表示する文字列を作成する。
     message = '\n'.join(f'  {i}: {name}' for i, name in enumerate(available_plugins_names))
     # ユーザーにプラグインを指定させる。
     print('インストールしたいプラグインを番号で指定してください。')
     print(message)
+    # 番号を入力してもらう。
     idx = int(input('\n>>> '))
+    # 対応するプラグイン名を示す。
     print(f'\n「{available_plugins_names[idx]}」をインストールします。')
-    # 選んだプラグインのパスを返す
+    # 選んだプラグインのパスを返す。
     return available_plugins[idx], available_plugins_names[idx]
 
 
@@ -125,11 +144,11 @@ def install_requirements_with_pip(plugin_installed_dir):
     python_exe = find_python_exe()
     # ライブラリをインストール
     if exists('requirements.txt'):
-        subprocess.run([python_exe, '-m', 'pip', 'install', '-r', 'requirements.txt'],
-                       check=True)
+        subprocess.run(
+            [python_exe, '-m', 'pip', 'install', '-r', 'requirements.txt'], check=True)
     else:
-        subprocess.run([python_exe, '-m', 'pip', 'install', 'utaupy'],
-                       check=True)
+        subprocess.run(
+            [python_exe, '-m', 'pip', 'install', 'utaupy'],  check=True)
     # 作業フォルダをもとに戻す
     chdir(dirname(__file__))
 
@@ -165,9 +184,8 @@ def main():
     """
     # オフライン版とオンライン版のどちらとしてダウンロードされたか調べる。
     release_name = basename(dirname(__file__))
-    offline_mode = any(
-        keyword in release_name for keyword in ('offline', 'off-line', 'オフライン')
-    )
+    offline_mode = \
+        any(keyword in release_name for keyword in ('offline', 'off-line', 'オフライン'))
     # インストールしたいプラグインを指定する。
     input_dir, plugin_name = select_plugin()
     # プラグインをインストールする。
@@ -176,6 +194,8 @@ def main():
 
     # オンライン実行の場合は、Pythonやパッケージをオンデマンドインストールする。
     if not offline_mode:
+        # インストーラーと同じ階層にあるPythonのpip等のパッケージをアップデートする。
+        upgrade_python_embed_packages()
         # Pythonをインストールする。
         install_python(plugin_installed_dir)
         # インストールしたプラグインに必要なライブラリをインストールする。

@@ -1,1 +1,3 @@
+wheel
 send2trash
+tqdm
