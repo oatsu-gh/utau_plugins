@@ -35,8 +35,8 @@ def remove_cache_files(remove_list):
     キャッシュファイルを削除する。
     """
     # キャッシュフォルダを再帰的に検索
-    dirs_to_remove = [path for path in glob(join('**/', ''), recursive=True)
-                      if basename(path) in remove_list]
+    dirs_to_remove = [path for path in glob(join('**', '*'), recursive=True)
+                      if (isdir(path) and basename(path) in remove_list)]
     for cache_dir in dirs_to_remove:
         print(f'  {cache_dir}')
         rmtree(cache_dir)
