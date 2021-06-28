@@ -12,7 +12,7 @@ from shutil import copy2, copytree, rmtree
 from time import sleep
 
 from tqdm import tqdm
-from install import install_requirements_with_pip
+from install import find_python_exe, install_requirements_with_pip
 
 RELEASE_DIR = '_release'
 RELEASE_NAME = 'utau_plugins_v---'
@@ -27,8 +27,8 @@ def upgrade_python_embed_packages():
 
     同梱配布するパッケージを更新する。
     """
-    print('\nUpgrading packages')
-    python_exe = glob(join('python-*-embed-*', 'python.exe'))[0]
+    print('Upgrading packages')
+    python_exe = find_python_exe()
     subprocess.run([python_exe, '-m', 'pip', 'install', '--upgrade', 'pip'], check=True)
     subprocess.run([python_exe, '-m', 'pip', 'install', '--upgrade', 'setuptools'], check=True)
     subprocess.run([python_exe, '-m', 'pip', 'install', '--upgrade', 'wheel'], check=True)
@@ -39,7 +39,7 @@ def remove_cache_files(remove_list):
     """
     キャッシュファイルを削除する。
     """
-    print('\nRemoving cache')
+    print('Removing cache')
     # キャッシュフォルダを再帰的に検索
     dirs_to_remove = [path for path in glob(join('**', '*'), recursive=True)
                       if (isdir(path) and basename(path) in remove_list)]
@@ -51,7 +51,7 @@ def copy_files_to_release_dir(release_dir, ignore_list):
     """
     配布したいファイルをリリース用のフォルダに複製する。
     """
-    print('\nCopying files')
+    print('Copying files')
     if exists(release_dir):
         rmtree(release_dir)
     # 直下のファイルとフォルダ一覧を取得
@@ -68,7 +68,7 @@ def markdown2txt(release_dir):
     """
     プラグインフォルダ内の Markdown ファイルの拡張子 .md から .txt に変える。
     """
-    print('\nRenaming markdown files')
+    print('Renaming markdown files')
     markdown_files = glob(join(release_dir, '*.md')) + glob(join(release_dir, '*', '*.md'))
     for path_markdown in tqdm(markdown_files):
         path_txt = f'{splitext(path_markdown)[0]}.txt'
@@ -86,25 +86,26 @@ def prepare_online_installer(release_dir, ignore_list):
     markdown2txt(release_dir)
 
 
-def prepare_offline_installer(release_dir, ignore_list):
+def prepare_offline_installer(offline_release_dir, ignore_list):
     """
     オフライン環境向けのインストーラーを用意する。
 
     あらかじめ python-embed をあらかじめ仕込んで、
     pip install -r requirements.txt を済ませておく。
     """
-    copy_files_to_release_dir(release_dir, ignore_list)
-    python_embed_dir = glob(join(release_dir, 'python-*-embed-*'))[0]
-    plugin_dirs = [path for path in glob(join(release_dir, '*', '')) if path != python_embed_dir]
+    copy_files_to_release_dir(offline_release_dir, ignore_list)
+    python_embed_dir = dirname(find_python_exe())
+    plugin_dirs = [path for path in glob(join(offline_release_dir, '*', '')) if path != python_embed_dir]
     basename_python_embed_dir = basename(python_embed_dir)
     for plugin_dir in plugin_dirs:
         copytree(python_embed_dir, join(plugin_dir, basename_python_embed_dir))
         print('\nInstalling requirements  for', plugin_dir)
         install_requirements_with_pip(plugin_dir)
+    print()
     # 組み込み用Pythonの余ってるやつを削除
-    rmtree(python_embed_dir)
+    rmtree(join(offline_release_dir, python_embed_dir))
     # md拡張子をtxtに変更する
-    markdown2txt(release_dir)
+    markdown2txt(offline_release_dir)
 
 
 def main(release_dir, ignore_list, remove_list):
@@ -115,7 +116,11 @@ def main(release_dir, ignore_list, remove_list):
     offline_release_dir = release_dir + '_offline'
     # 組み込み用Pythonの中にあるpipをアップデートする。
     upgrade_python_embed_packages()
+    # オンラインインストーラーのリリースを作る
     prepare_online_installer(online_release_dir, ignore_list)
+    # 一部のキャッシュフォルダが自動的に消えるのを待つ
+    sleep(0.1)
+    # オフラインインストーラーのリリースを作る
     prepare_offline_installer(offline_release_dir, ignore_list)
     # キャッシュファイルを削除
     remove_cache_files(remove_list)
