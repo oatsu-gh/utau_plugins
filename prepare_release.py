@@ -6,8 +6,8 @@ utau_plugin をリリース用にする奴。
 
 import subprocess
 from glob import glob
-from os import chdir
-from os.path import basename, dirname, exists, isdir, join
+from os import chdir, rename
+from os.path import basename, dirname, exists, isdir, join, splitext
 from shutil import copy2, copytree, rmtree
 
 RELEASE_DIR = '_release'
@@ -42,39 +42,56 @@ def remove_cache_files(remove_list):
         rmtree(cache_dir)
 
 
-def copy_files_to_release_dir(release_dir, release_name, ignore_list):
+def copy_files_to_release_dir(release_dir, ignore_list):
     """
     配布したいファイルをリリース用のフォルダに複製する。
     """
-    if exists(join(release_dir, release_name)):
-        rmtree(release_dir, release_name)
+    if exists(release_dir):
+        rmtree(release_dir)
     # 直下のファイルとフォルダ一覧を取得
     files_and_dirs = [path for path in glob('*') if path not in ignore_list]
     for path in files_and_dirs:
         print(f'  {path}')
         if isdir(path):
-            copytree(path, join(release_dir, release_name, basename(path)))
+            copytree(path, join(release_dir, basename(path)))
         else:
-            copy2(path, join(release_dir, release_name, basename(path)))
+            copy2(path, join(release_dir, basename(path)))
 
 
-def main():
+def markdown2txt(release_dir):
+    """
+    プラグインフォルダ内の Markdown ファイルの拡張子 .md から .txt に変える。
+    """
+    markdown_files = glob(join(release_dir, '*.md')) + glob(join(release_dir, '*', '*.md'))
+    for path_markdown in markdown_files:
+        print(f'  {path_markdown}')
+        path_txt = f'{splitext(path_markdown)[0]}.txt'
+        rename(path_markdown, path_txt)
+
+
+def main(release_dir, ignore_list, remove_list):
     """
     不要なファイルを削除してから、リリースフォルダに複製する。
     """
+    # 組み込み用Pythonの中にあるpipをアップデートする。
     print('Upgrading pip')
     upgrade_pip()
+    # キャッシュファイルを削除
     print('Removing cache')
-    remove_cache_files(REMOVE_LIST)
+    remove_cache_files(remove_list)
     print('Copyind files')
     try:
-        copy_files_to_release_dir(RELEASE_DIR, RELEASE_NAME, IGNORE_LIST)
+        copy_files_to_release_dir(release_dir, ignore_list)
     except FileExistsError as e:
         print(e)
         input('Failed to prepare release.')
+    # Markdownファイルをプレーンテキストファイルに変更
+    print('Renaming markdown files')
+    # md拡張子をtxtに変更する
+    markdown2txt(release_dir)
 
 
 if __name__ == '__main__':
     chdir(dirname(__file__))
-    main()
+    main(join(RELEASE_DIR, RELEASE_NAME), IGNORE_LIST, REMOVE_LIST)
     input('Press Enter to exit.')
