@@ -10,7 +10,7 @@ import sys
 from glob import glob
 from os import chdir
 from os.path import basename, dirname, exists, expandvars, join, relpath
-from shutil import copytree, rmtree
+from shutil import copytree
 
 from send2trash import send2trash
 
@@ -80,7 +80,7 @@ def select_plugin(start='./'):
     idx = int(input('\n>>> '))
     print(f'\n「{available_plugins_names[idx]}」をインストールします。')
     # 選んだプラグインのパスを返す
-    return available_plugins[idx] , available_plugins_names[idx]
+    return available_plugins[idx], available_plugins_names[idx]
 
 
 def install_plugin(input_dir, python_dir, dst_dir):
@@ -145,7 +145,6 @@ def install_requirements_with_pip(plugin_installed_dir):
                        check=True)
     # 作業フォルダをもとに戻す
     chdir(dirname(__file__))
-
 
 
 def main():
