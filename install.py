@@ -6,10 +6,11 @@ C:\Users\{username}\AppData\Roaming\UTAU\Plugins にインストールする。
 """
 
 import subprocess
+import sys
 from glob import glob
 from os import chdir
 from os.path import basename, dirname, exists, expandvars, join, relpath
-from shutil import copytree
+from shutil import copytree, rmtree
 
 from send2trash import send2trash
 
@@ -76,10 +77,10 @@ def select_plugin(start='./'):
     # ユーザーにプラグインを指定させる。
     print('インストールしたいプラグインを番号で指定してください。')
     print(message)
-    idx = int(input('>>> '))
-    print(f'「{available_plugins_names[idx]}」をインストールします。')
+    idx = int(input('\n>>> '))
+    print(f'\n「{available_plugins_names[idx]}」をインストールします。')
     # 選んだプラグインのパスを返す
-    return available_plugins[idx]
+    return available_plugins[idx] , available_plugins_names[idx]
 
 
 def install_plugin(input_dir, python_dir, dst_dir):
@@ -146,6 +147,7 @@ def install_requirements_with_pip(plugin_installed_dir):
     chdir(dirname(__file__))
 
 
+
 def main():
     """
     インストール先のpathをCMDに返す
@@ -153,15 +155,24 @@ def main():
     # 組み込み用Pythonのフォルダを特定する
     python_dir = get_python_dir()
     # インストールしたいプラグインを指定する。
-    input_dir = select_plugin()
+    input_dir, plugin_name = select_plugin()
     # インストールする。
     utau_appdata_roaming_plugins = join(utau_appdata_root(), 'plugins')
-    installed_dir = install_plugin(input_dir, python_dir, utau_appdata_roaming_plugins)
-    # バッチファイルを作成する。
-    make_wrapper_bat(installed_dir)
+    plugin_installed_dir = install_plugin(input_dir, python_dir, utau_appdata_roaming_plugins)
     # インストールしたプラグインに必要なライブラリをインストールする。
-    install_requirements_with_pip(installed_dir)
-    print('インストール完了しました！')
+    try:
+        install_requirements_with_pip(plugin_installed_dir)
+    except subprocess.CalledProcessError:
+        rmtree(plugin_installed_dir)
+        print('----------------------------------------')
+        print('プラグインのインストールに失敗しました。'
+              'インターネットに接続した状態でやり直してください。')
+        print('----------------------------------------')
+        sys.exit(1)
+    # バッチファイルを作成する。
+    make_wrapper_bat(plugin_installed_dir)
+    # 成功したことを伝える
+    print(f'「{plugin_name}」をインストールしました！')
 
 
 if __name__ == '__main__':
