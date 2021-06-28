@@ -163,11 +163,10 @@ def main():
     try:
         install_requirements_with_pip(plugin_installed_dir)
     except subprocess.CalledProcessError:
-        rmtree(plugin_installed_dir)
-        print('----------------------------------------')
-        print('プラグインのインストールに失敗しました。'
-              'インターネットに接続した状態でやり直してください。')
-        print('----------------------------------------')
+        print('--------------------------------------------------')
+        print('プラグインのインストールに失敗しました。')
+        print('インターネットに接続した状態でやり直してください。')
+        print('--------------------------------------------------')
         sys.exit(1)
     # バッチファイルを作成する。
     make_wrapper_bat(plugin_installed_dir)
