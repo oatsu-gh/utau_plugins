@@ -29,7 +29,6 @@ def upgrade_python_embed_packages():
     subprocess.run([python_exe, '-m', 'pip', 'install', '--upgrade', 'send2trash'], check=True)
 
 
-
 def utau_appdata_root() -> str:
     r"""
     プラグインとか音源が置いてあるフォルダのパスを返す。
@@ -145,10 +144,16 @@ def install_requirements_with_pip(plugin_installed_dir):
     # ライブラリをインストール
     if exists('requirements.txt'):
         subprocess.run(
-            [python_exe, '-m', 'pip', 'install', '-r', 'requirements.txt'], check=True)
+            [python_exe, '-m', 'pip', 'install',
+             '--no-warn-script-location',
+             '-r', 'requirements.txt'],
+            check=True
+        )
     else:
         subprocess.run(
-            [python_exe, '-m', 'pip', 'install', 'utaupy'],  check=True)
+            [python_exe, '-m', 'pip', 'install', '--no-warn-script-location', 'utaupy'],
+            check=True
+        )
     # 作業フォルダをもとに戻す
     chdir(dirname(__file__))
 
