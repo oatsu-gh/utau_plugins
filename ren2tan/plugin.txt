@@ -1,0 +1,3 @@
+name=‰ÌŽŒ‚ð’P“Æ‰¹‚É‚·‚é
+execute=.\ren2tan.bat
+ustversion=1.20
