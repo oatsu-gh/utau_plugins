@@ -17,7 +17,7 @@ def force_lyric_zenkaku_hiragana(plugin):
         # 半角カタカナを全角カタカナにする
         lyric = jaconv.h2z(lyric, kana=True, ascii=False, digit=False)
         # カタカナをひらがなにする
-        lyric = jaconv.kata2hira(lyric)
+        lyric = jaconv.kata2hira(lyric).replace('ゔ', 'ヴ')
         # 無声化とかにつかう歌詞を適当に変更
         # 歌詞を上書きする
         note.lyric = lyric
