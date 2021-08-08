@@ -1,0 +1,2 @@
+name=ƒƒ‚’ ‚ÅŠJ‚­
+execute=.\open_with_notepad.bat
