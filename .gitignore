@@ -6,4 +6,4 @@ test
 *.wav
 *.zip
 python-*-embed-*
-__pychache__
+__pycache__
