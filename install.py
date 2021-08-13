@@ -15,6 +15,20 @@ from shutil import copytree
 from send2trash import send2trash
 
 
+def pip_install_upgrade_pip(python_exe, package_name):
+    r"""
+    python-3.9.5-embed-amd64/python.exe -m pip install --upgrade pip
+    """
+    subprocess.run([python_exe,
+                    '-m',
+                    'pip',
+                    'install',
+                    '--upgrade',
+                    '--no-warn-script-location',
+                    package_name],
+                   check=True)
+
+
 def upgrade_python_embed_packages():
     r"""
     python-3.9.5-embed-amd64/python.exe -m pip install --upgrade pip
@@ -23,10 +37,10 @@ def upgrade_python_embed_packages():
     """
     print('Upgrading packages')
     python_exe = find_python_exe()
-    subprocess.run([python_exe, '-m', 'pip', 'install', '--upgrade', 'pip'], check=True)
-    subprocess.run([python_exe, '-m', 'pip', 'install', '--upgrade', 'setuptools'], check=True)
-    subprocess.run([python_exe, '-m', 'pip', 'install', '--upgrade', 'wheel'], check=True)
-    subprocess.run([python_exe, '-m', 'pip', 'install', '--upgrade', 'send2trash'], check=True)
+    pip_install_upgrade_pip(python_exe, 'pip')
+    pip_install_upgrade_pip(python_exe, 'setuptools')
+    pip_install_upgrade_pip(python_exe, 'wheel')
+    pip_install_upgrade_pip(python_exe, 'send2trash')
 
 
 def utau_appdata_root() -> str:
@@ -132,7 +146,7 @@ def install_python(plugin_installed_dir):
     copytree(python_dir, join(plugin_installed_dir, basename(python_dir)))
 
 
-def install_requirements_with_pip(plugin_installed_dir):
+def pip_install_requirements(plugin_installed_dir):
     """
     Python.exeとソースコードのインストールが終わったフォルダを指定して、
     そのプラグインに必要なライブラリをインストールする。
@@ -205,7 +219,7 @@ def main():
         install_python(plugin_installed_dir)
         # インストールしたプラグインに必要なライブラリをインストールする。
         try:
-            install_requirements_with_pip(plugin_installed_dir)
+            pip_install_requirements(plugin_installed_dir)
         except subprocess.CalledProcessError:
             print('--------------------------------------------------')
             print('プラグインのインストールに失敗しました。')
