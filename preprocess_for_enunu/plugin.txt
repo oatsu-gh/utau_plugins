@@ -1,0 +1,4 @@
+name=ENUNU—p‚É‘Oˆ—‚·‚é
+execute=.\preprocess_for_enunu.bat
+ustversion=1.20
+notes=all

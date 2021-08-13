@@ -1,0 +1,2 @@
+jaconv
+utaupy>=1.13.2
