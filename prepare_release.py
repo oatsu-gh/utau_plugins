@@ -12,7 +12,7 @@ from time import sleep
 
 from tqdm import tqdm
 
-from install import (find_python_exe, install_requirements_with_pip,
+from install import (find_python_exe, pip_install_requirements,
                      upgrade_python_embed_packages)
 
 RELEASE_DIR = '_release'
@@ -93,7 +93,7 @@ def prepare_offline_installer(offline_release_dir, ignore_list):
     for plugin_dir in plugin_dirs:
         copytree(python_embed_dir, join(plugin_dir, basename_python_embed_dir))
         print('\nInstalling requirements for', plugin_dir)
-        install_requirements_with_pip(plugin_dir)
+        pip_install_requirements(plugin_dir)
     print()
     # md拡張子をtxtに変更する
     markdown2txt(offline_release_dir)
@@ -109,10 +109,10 @@ def main(release_dir, ignore_list, remove_list):
     upgrade_python_embed_packages()
     # 一部のキャッシュフォルダが自動的に消えるのを待つ
     sleep(0.1)
-    # オフラインインストーラーのリリースを作る
-    prepare_offline_installer(offline_release_dir, ignore_list)
     # オンラインインストーラーのリリースを作る
     prepare_online_installer(online_release_dir, ignore_list)
+    # オフラインインストーラーのリリースを作る
+    prepare_offline_installer(offline_release_dir, ignore_list)
     # キャッシュファイルを削除
     remove_cache_files(remove_list)
 
