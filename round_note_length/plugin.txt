@@ -1,0 +1,3 @@
+name=”¼’[‚Èƒm[ƒg’·‚ğŠÛ‚ß‚é
+execute=.\round_note_length.bat
+ustversion=1.20
