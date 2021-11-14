@@ -34,7 +34,7 @@ def replace_special_lyric(plugin):
     """
     d_replace = {
         'ゔ': 'ヴ',
-        ' n': 'ん', ' s': ' す', ' t': ' っ', ' k': ' っ',
+        ' n': 'ん', ' s': ' す', ' t': ' っ', ' k': ' っ', ' p': ' っ',
         ' h': ' R', ' -': ' R',
         '息': 'R', 'ぶれす': 'R', 'br': 'R',
         'づ': 'ず', 'を': 'お'
@@ -54,7 +54,7 @@ def suppin_lyric(plugin):
     for note in plugin.notes:
         original_lyric = note.lyric
         # 休符のとき
-        if original_lyric == 'R' or ' R' in original_lyric:
+        if 'R' in original_lyric:
             new_lyric = 'R'
         # 休符でないときは平仮名以外の文字をすべて削除
         else:
