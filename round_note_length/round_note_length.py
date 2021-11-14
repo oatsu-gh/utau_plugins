@@ -15,6 +15,8 @@ def round_note_length(plugin, unit):
     """
     for note in plugin.notes:
         note.length = round(note.length / unit) * unit
+        if note.length == 0:
+            note.delete()
 
 
 if __name__ == '__main__':
