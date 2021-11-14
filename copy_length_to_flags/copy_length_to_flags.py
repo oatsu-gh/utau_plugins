@@ -11,7 +11,6 @@
   - `Flags=【480】g-2H40` → `Flags=g-2H40`
 """
 import re
-from sys import argv
 
 import utaupy as up
 
@@ -44,7 +43,7 @@ def main(plugin):
     """
     pattern = re.compile('【.*?】')
     notes = plugin.notes
-    if all([note.lyric == 'R' or pattern.search(note.flags) for note in notes]):
+    if all((note.lyric == 'R' or pattern.search(note.flags)) for note in notes):
         delete_length_to_flags(plugin, pattern)
     else:
         delete_length_to_flags(plugin, pattern)
@@ -52,5 +51,4 @@ def main(plugin):
 
 
 if __name__ == '__main__':
-    # `python copy_length_to_flags.py hogehoge.tmp --mode copy`
     up.utauplugin.run(main)
