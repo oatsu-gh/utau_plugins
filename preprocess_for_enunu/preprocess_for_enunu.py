@@ -50,7 +50,7 @@ def suppin_lyric(plugin):
     """
     平仮名以外の文字を歌詞から削除する。
     """
-    hiragana_list = [chr(i) for i in range(12353, 12436)]
+    hiragana_set = {chr(i) for i in range(12353, 12436)}
     for note in plugin.notes:
         original_lyric = note.lyric
         # 休符のとき
@@ -59,7 +59,8 @@ def suppin_lyric(plugin):
         # 休符でないときは平仮名以外の文字をすべて削除
         else:
             new_lyric = ''.join(
-                [character for character in original_lyric if character in hiragana_list])
+                [character for character in original_lyric if character in hiragana_set]
+            )
         # すっぴん化で歌詞が消滅した場合は元の歌詞を使う
         if len(new_lyric) == 0:
             note.lyric = original_lyric
