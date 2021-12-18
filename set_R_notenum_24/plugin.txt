@@ -1,0 +1,3 @@
+name=‹x•„‚Ì‰¹’ö‚ð‚·‚²‚­’á‚­‚·‚é
+execute=.\set_rest_notenum_24.bat
+ustversion=1.20
