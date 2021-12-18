@@ -1,0 +1,3 @@
+name=‘£‰¹‚ð•ªŠ„‚·‚é
+execute=.\devide_cl.bat
+ustversion=1.20
