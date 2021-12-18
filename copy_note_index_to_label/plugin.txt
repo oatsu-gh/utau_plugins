@@ -1,0 +1,3 @@
+name=ラベルにノート番号をコピーする／削除する(&[)
+execute=.\copy_note_index_to_label.bat
+ustversion=1.20
