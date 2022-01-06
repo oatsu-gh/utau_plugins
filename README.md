@@ -19,9 +19,7 @@
 - copy_length_to_flags（フラグにノート長をコピーする／削除する）
   - ノート長情報をフラグ欄にコピーする。
 - devide_cl（促音を分割する）
-
   - 促音を含むノートを分割する。
-
 - fix_mojibake（文字化けを直す）
   - 文字化けを直して UST ファイルを開き直す。
 - join_cl（促音を前のノートに結合する）
@@ -31,9 +29,7 @@
 - makijita_maker（巻き舌っぽくする）
   - 選択範囲の最初のノートを分割して巻き舌っぽくする。
 - open_enuconfig（enuconfig を開く）
-
   - 音源フォルダの enuconfig を開く。
-
 - open_with_notepad（メモ帳で開く）
   - メモ帳でスクリプトファイルを開く。
 - preprocess_for_enunu（ENUNU 用に前処理する）
