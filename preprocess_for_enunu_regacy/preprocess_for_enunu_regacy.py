@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2021 oatsu
+# Copyright (c) 2021-2022 oatsu
 """
 ENUNUで歌わせるときに適当に動くようにする。
 
