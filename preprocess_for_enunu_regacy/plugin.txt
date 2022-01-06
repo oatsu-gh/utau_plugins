@@ -1,0 +1,4 @@
+name=ENUNU用に前処理する（促音結合あり）
+execute=.\preprocess_for_enunu_regacy.bat
+ustversion=1.20
+notes=all

@@ -121,7 +121,7 @@ def main(plugin):
     replace_special_lyric(plugin)
     suppin_lyric(plugin)
     # 促音結合
-    # join_cl(plugin)
+    join_cl(plugin)
     # 休符結合
     join_R(plugin)
     # 休符を追加する

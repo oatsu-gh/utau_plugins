@@ -1,4 +1,4 @@
-name=ENUNU用に前処理する
+name=ENUNU用に前処理する（促音結合なし）(&8)
 execute=.\preprocess_for_enunu.bat
 ustversion=1.20
 notes=all
