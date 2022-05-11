@@ -1,0 +1,3 @@
+name=ピッチ形状を一括変更する
+execute=.\change_all_pbm.bat
+ustversion=1.20
