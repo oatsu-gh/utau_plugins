@@ -20,6 +20,7 @@
 - join_cl（促音を前のノートに結合する）
 - lyric_bracketed（歌詞を括弧でくくってファイル出力する）
 - makijita_maker（巻き舌っぽくする）
+- memorize_and_recall_pitch_pattern（ピッチパターンを登録する／呼び出す）
 - open_enuconfig（enuconfig を開く）
 - open_with_notepad（メモ帳で開く）
 - preprocess_for_enunu（ENUNU 用に前処理する）
@@ -98,3 +99,8 @@
 
 - ピッチ形状を一括変更するプラグイン を追加
 - 同梱の Python を 3.9.5 → 3.9.12 に更新
+
+### v0.10.0 (2023-02-12)
+
+- ピッチ形状を記憶したり呼び出したりするプラグインを追加
+- 同梱の Python を 3.9.12 → 3.11.2 に更新

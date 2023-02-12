@@ -1,0 +1,3 @@
+name=ピッチ形状を記憶する／呼び出す
+execute=.\memorize_and_recall_pitch_pattern.bat
+ustversion=1.20

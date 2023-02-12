@@ -104,7 +104,8 @@ def select_plugin(start='./'):
     available_plugins_names = \
         [read_plugin_txt_as_dict(path)['name'] for path in available_plugins]
     # ユーザーに指定させるために表示する文字列を作成する。
-    message = '\n'.join(f'  {i}: {name}' for i, name in enumerate(available_plugins_names))
+    message = '\n'.join(f'  {i}: {name}' for i,
+                        name in enumerate(available_plugins_names))
     # ユーザーにプラグインを指定させる。
     print('インストールしたいプラグインを番号で指定してください。')
     print(message)
@@ -165,7 +166,8 @@ def pip_install_requirements(plugin_installed_dir):
         )
     else:
         subprocess.run(
-            [python_exe, '-m', 'pip', 'install', '--no-warn-script-location', 'utaupy'],
+            [python_exe, '-m', 'pip', 'install',
+                '--no-warn-script-location', 'utaupy'],
             check=True
         )
     # 作業フォルダをもとに戻す
@@ -204,12 +206,14 @@ def main():
     # オフライン版とオンライン版のどちらとしてダウンロードされたか調べる。
     release_name = basename(dirname(__file__))
     offline_mode = \
-        any(keyword in release_name for keyword in ('offline', 'off-line', 'オフライン'))
+        any(keyword in release_name for keyword in (
+            'offline', 'off-line', 'オフライン'))
     # インストールしたいプラグインを指定する。
     input_dir, plugin_name = select_plugin()
     # プラグインをインストールする。
     utau_appdata_roaming_plugins_dir = join(utau_appdata_root(), 'plugins')
-    plugin_installed_dir = install_plugin(input_dir, utau_appdata_roaming_plugins_dir)
+    plugin_installed_dir = install_plugin(
+        input_dir, utau_appdata_roaming_plugins_dir)
 
     # オンライン実行の場合は、Pythonやパッケージをオンデマンドインストールする。
     if not offline_mode:
