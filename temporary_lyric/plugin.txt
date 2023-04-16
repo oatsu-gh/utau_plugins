@@ -1,0 +1,3 @@
+name=‰¼‚Ì‰ÌŽŒ‚ð“ü—Í‚·‚é
+execute=.\temporary_lyric.bat
+ustversion=1.20
