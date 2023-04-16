@@ -16,6 +16,7 @@
 - copy_index_to_label（ラベルにノート番号をコピーする／削除する）
 - copy_length_to_flags（フラグにノート長をコピーする／削除する）
 - devide_cl（促音を分割する）
+- doremi_lyric（ドレミ歌詞にする）
 - fix_mojibake（文字化けを直す）
 - join_cl（促音を前のノートに結合する）
 - lyric_bracketed（歌詞を括弧でくくってファイル出力する）
@@ -27,7 +28,6 @@
 - ren2tan（歌詞を単独音にする）
 - set_lyric_R（すっぴん休符にする）
 - set_R_vel100（語尾息の子音速度を 100 にする）
-- temporary_lyric（仮の歌詞を入力する）
 - very_suppin_lyric（超歌詞すっぴんプラグイン）
 - wakame（ふえるわかめ）
 
