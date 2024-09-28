@@ -1,0 +1,3 @@
+name=PBY‚ðŠÛ‚ß‚é
+execute=.\round_pby.bat
+ustversion=1.20
