@@ -10,6 +10,8 @@ def round_pitches(plugin):
     """音高を丸める
     """
     for note in plugin.notes:
+        if note.pbs is None or note.pby is None:
+            continue
         note.pbs = [note.pbs[0], round(note.pbs[1] / 10) * 10]
         note.pby = [round(x/10) * 10 for x in note.pby]
 
