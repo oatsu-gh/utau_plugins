@@ -22,10 +22,15 @@
 - lyric_bracketed（歌詞を括弧でくくってファイル出力する）
 - makijita_maker（巻き舌っぽくする）
 - memorize_and_recall_pitch_pattern（ピッチパターンを登録する／呼び出す）
+- merge_cl_and_R（「っ」と「R」を結合する）
+- open_config_yaml（config.yaml を開く）
 - open_enuconfig（enuconfig を開く）
 - open_with_notepad（メモ帳で開く）
 - preprocess_for_enunu（ENUNU 用に前処理する）
+- randomize_note_length（ランダムにノート位置をずらす）
 - ren2tan（歌詞を単独音にする）
+- round_PBW（PBWを丸める）
+- round_PBY（PBYを丸める）
 - set_lyric_R（すっぴん休符にする）
 - set_R_vel100（語尾息の子音速度を 100 にする）
 - very_suppin_lyric（超歌詞すっぴんプラグイン）
@@ -106,6 +111,17 @@
 - ピッチ形状を記憶したり呼び出したりするプラグインを追加
 - 同梱の Python を 3.9.12 → 3.11.2 に更新
 
-### v0.11.10 (2023-04016)
+### v0.11.0 (2023-04016)
 
 - 仮の歌詞を入力するプラグインを追加
+
+### v1.12.0 (2025-05-27)
+
+- 「っ」と「R」を結合するプラグインを追加
+- PBW を丸めるプラグインを追加
+  - 動作不安定です。
+- PBY を丸めるプラグインを追加
+  - 動作不安定です。
+- config.yaml を開くプラグインを追加
+- ファイル名修正：`set_R_velocity100.py` → `set_R_vel100.py`
+- 同梱の Python を 3.9.12 → 3.13.3 に更新
