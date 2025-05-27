@@ -1,0 +1,3 @@
+name=enuconfig‚ðŠJ‚­
+execute=.\open_enuconfig.bat
+ustversion=1.20
