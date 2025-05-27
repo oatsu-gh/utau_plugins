@@ -3,37 +3,45 @@
 """
 ピッチ点の高さを丸める。全て半音レベルにする。EnuPitchを使った後に使用する想定。
 """
-from utaupy.utauplugin import run
+from itertools import accumulate
+
+import utaupy
 
 # PBW丸める単位
-PBW_UNIT_BY_NOTELENGTH = 32  # 分音符
+PBW_UNIT_BY_NOTELENGTH = 64  # 分音符
 
 
 def round_pbw(plugin):
-    """音高を丸める
+    """ピッチ点のタイミングを時刻グリッドに合わせる
     """
     for note in plugin.notes:
-        try:
-            # 丸める単位
-            unit_ms = (60 / note.tempo) / (PBW_UNIT_BY_NOTELENGTH / 4)
-            # PBWが無かったら何も処理せず次のノートに進む
-            if 'PBW' not in note:
-                continue
-            # PBSが無かったらオフセット無し
-            if 'PBS' not in note:
-                offset = 0
-            # PBSにオフセットの値が入っているとき (基本的には負の値が入っていることに注意)
-            # 負の値だとノート開始より前にピッチ点があり、正の値だと遅れた位置にピッチ点がある。
-            else:
-                offset = round(note.pbs[0] / unit_ms) * unit_ms
-                note.pbs[0] = offset
-                note.pbw = [round(x / unit_ms) * unit_ms for x in note.pbw]
+        # PBWが無かったら何も処理せず次のノートに進む
+        if note.pbw is None or len(note.pbw) == 0:
+            continue
+        # PBSが無かったら [0;0] を入れる
+        if note.pbs is None:
+            note.pbs = [0, 0]
+        # 丸める単位
+        unit_ms = (60 / note.tempo) / (PBW_UNIT_BY_NOTELENGTH / 4) * 1000
 
-        except Exception as e:
-            print('Exception in note below ----------------------------------------')
-            print(note)
-            print('----------------------------------------------------------------')
-            raise e
+        # 丸めた時に誤差蓄積しないように累積和にする
+        pbs_pbw_accumulate = list(accumulate(
+            note.pbw, initial=float(note.pbs[0])))
+
+        # グリッドに丸めこむ
+        pbs_pbw_accumulate_round = [
+            round(t / unit_ms) * unit_ms for t in pbs_pbw_accumulate]
+
+        # PBWの累積時間を各ピッチ線の時間に戻す
+        pbw_round = [
+            t_1 - t_2 for (t_1, t_2) in
+            zip(pbs_pbw_accumulate_round[1:], pbs_pbw_accumulate_round[:-1])
+        ]
+
+        # PBSに入れる
+        note.pbs = [pbs_pbw_accumulate_round[0], note.pbs[1]]
+        # PBWに入れる
+        note.pbw = pbw_round
 
 
 def reduce_pitch_points(plugin):
@@ -75,7 +83,53 @@ def reduce_pitch_points(plugin):
         note.pbm = temp_pbm
 
 
+def test_round_pbw():
+    """round_pbw が想定通りの計算になっているかをテストする。
+    """
+    # テスト入力
+    pbs_in = [-100, 0]
+    pbw_in = [100, 30, 80, 50]
+    tempo = 120
+
+    # TODO: 64分音符で計算しなおす
+    # 入力ピッチ点は -100ms, 0ms, +30ms, +110ms, +160ms にある。
+    # BPM120で処理したら 32分音符グリッドは 60/120/8 = 0.0625 s = 62.5 ms なので、
+    # 62.5 の倍数で丸められるはず。
+    # 出力ピッチ点は -125ms, 0ms, 0ms, 125ms, 182.5 となる見込み。
+    # pbsとpbw はそれに基づいて計算する。
+    expected_pbs = [-125, 0]
+    expected_pbw = [125, 0, 125, 62.5]
+
+    # expected_pbs =
+    # expected pbw =
+    # サンプルUSTを作る
+    plugin = utaupy.utauplugin.UtauPlugin()
+    note = utaupy.ust.Note()
+    note.tempo = tempo
+    note.pbs = pbs_in
+    note.pbw = pbw_in
+    plugin.notes.append(note)
+    # テスト
+    round_pbw(plugin)
+    pbs_out = plugin.notes[0].pbs
+    pbw_out = plugin.notes[0].pbw
+    print('pbs_in  :', pbs_in)
+    print('pbs_out :', pbs_out)
+    print('expected:', expected_pbs)
+    print('-> PBS OK' if pbs_out == expected_pbs else '-> PBS NG')
+    print('pbw_in  :', pbw_in)
+    print('pbw_out :', pbw_out)
+    print('expected:', expected_pbw)
+    print('-> PBW OK' if pbw_out == expected_pbw else '-> PBW NG')
+    assert pbs_out == expected_pbs and pbw_out == expected_pbw
+
+
 def main(plugin):
+    """全体の処理をする
+
+    Args:
+        plugin (utaupy.utauplugin.UtauPlugin): UtauPlubin オブジェクト
+    """
     # ピッチ点を削減
     reduce_pitch_points(plugin)
     # PBWを丸める
@@ -83,4 +137,4 @@ def main(plugin):
 
 
 if __name__ == "__main__":
-    run(main)
+    utaupy.utauplugin.run(main)
