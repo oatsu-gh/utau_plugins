@@ -1,0 +1,3 @@
+name=ƒm[ƒg’·‚ğƒ‰ƒ“ƒ_ƒ€‚É•Ï‰»‚³‚¹‚é
+execute=.\randomize_note_length.bat
+ustversion=1.20
