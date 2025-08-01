@@ -90,7 +90,7 @@ def join_cl(plugin):
 
 def join_R(plugin):
     """
-    給付が連続しているときに結合する。
+    休符が連続しているときに結合する。
     """
     for i, note in enumerate(plugin.notes[:-1]):
         next_note = plugin.notes[i + 1]
